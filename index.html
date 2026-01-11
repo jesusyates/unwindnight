@@ -31,26 +31,34 @@
             justify-content: center;
             padding: 15px;
             overflow-x: hidden;
-            overflow-y: auto;
+            position: relative;
+        }
+        
+        /* 顶部进度条 */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 3px;
+            background: linear-gradient(90deg, #0088cc, #00aaff);
+            z-index: 1000;
+            transition: width 0.3s ease;
+            border-radius: 0 2px 2px 0;
+        }
+        
+        .progress-bar.active {
+            width: 100%;
+            transition: width 1.5s cubic-bezier(0.65, 0, 0.35, 1);
         }
         
         /* 主容器 */
         .main-container {
             width: 100%;
-            max-width: 100%;
+            max-width: 400px;
             text-align: center;
             padding: 0 15px;
-            max-height: 90vh; /* 限制最大高度 */
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-        
-        /* 滚动容器 - 内容区域 */
-        .scroll-content {
-            max-height: 70vh;
-            overflow-y: auto;
-            padding-right: 5px;
-            -webkit-overflow-scrolling: touch;
+            animation: fadeIn 0.6s ease-out;
         }
         
         /* 圆形图片容器 */
@@ -58,15 +66,14 @@
             position: relative;
             width: 70vw;
             height: 70vw;
-            max-width: 300px;
-            max-height: 300px;
+            max-width: 280px;
+            max-height: 280px;
             margin: 0 auto 25px;
             border-radius: 50%;
             border: 4px solid white;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
             overflow: hidden;
             background-color: #1a1a1a;
-            flex-shrink: 0;
         }
         
         /* 圆形图片 */
@@ -104,7 +111,6 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
-            position: relative;
         }
         
         /* 按钮样式 */
@@ -154,56 +160,27 @@
             text-align: center;
         }
         
-        /* 点击效果 */
+        /* 按钮点击效果 */
         .action-button:active {
             transform: scale(0.96);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
         
-        /* 加载状态 */
+        /* 按钮加载状态 */
         .action-button.loading {
-            opacity: 0.8;
-            pointer-events: none;
-        }
-        
-        .action-button.loading .button-text {
-            opacity: 0.7;
+            position: relative;
+            overflow: hidden;
         }
         
         .action-button.loading::after {
             content: "";
             position: absolute;
-            right: 20px;
-            width: 18px;
-            height: 18px;
-            border: 2px solid transparent;
-            border-top: 2px solid currentColor;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-        
-        /* 成功状态 */
-        .action-button.success {
-            background-color: #4CAF50;
-            color: white;
-        }
-        
-        /* 状态提示 */
-        .status-message {
-            font-size: 14px;
-            color: #4CAF50;
-            margin-top: 5px;
-            height: 18px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .status-message.show {
-            opacity: 1;
-        }
-        
-        .status-message.error {
-            color: #ff4444;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: loadingShimmer 1.5s infinite;
         }
         
         /* 页脚 */
@@ -229,20 +206,14 @@
         }
         
         /* 动画 */
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
         
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+        @keyframes loadingShimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
         }
         
         /* 小屏幕优化 */
@@ -271,47 +242,16 @@
         /* 平板 */
         @media (min-width: 768px) {
             .main-container {
-                max-width: 500px;
+                max-width: 420px;
             }
             
             .image-container {
-                max-width: 280px;
-                max-height: 280px;
-            }
-        }
-        
-        /* 横屏模式 */
-        @media (orientation: landscape) and (max-height: 500px) {
-            .main-container {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                gap: 25px;
-                max-height: 85vh;
-            }
-            
-            .image-container {
-                width: 40vh;
-                height: 40vh;
-                max-width: 200px;
-                max-height: 200px;
-                margin-bottom: 0;
-                flex-shrink: 0;
-            }
-            
-            .scroll-content {
-                flex: 1;
-                max-height: 60vh;
-                text-align: left;
-            }
-            
-            .title, .subtitle {
-                text-align: left;
-                padding-left: 0;
+                max-width: 300px;
+                max-height: 300px;
             }
             
             .buttons-container {
-                max-width: 100%;
+                max-width: 350px;
             }
         }
         
@@ -323,6 +263,9 @@
     </style>
 </head>
 <body>
+    <!-- 顶部进度条 -->
+    <div class="progress-bar" id="progressBar"></div>
+    
     <!-- 背景 -->
     <div class="background"></div>
     
@@ -333,36 +276,27 @@
             <img src="images/1.jpg" alt="Mrs.Andi's profile" class="main-image" loading="lazy">
         </div>
         
-        <!-- 滚动内容区域 -->
-        <div class="scroll-content">
-            <!-- 标题和描述 -->
-            <h1 class="title">Mrs.Andi</h1>
-            <p class="subtitle">I update my status daily; feel free to check it out if you like.</p>
+        <!-- 标题和描述 -->
+        <h1 class="title">Mrs.Andi</h1>
+        <p class="subtitle">I update my status daily; feel free to check it out if you like.</p>
+        
+        <!-- 按钮容器 -->
+        <div class="buttons-container">
+            <!-- 第一个按钮 -->
+            <a href="https://p78t.com/l/RxpRypfz" 
+               class="action-button" 
+               id="contentButton"
+               target="_blank"
+               rel="noopener noreferrer">
+                <span class="button-icon">🔍</span>
+                <span class="button-text">Explore Content</span>
+            </a>
             
-            <!-- 按钮容器 -->
-            <div class="buttons-container">
-                <!-- 第一个按钮 -->
-                <a href="https://p78t.com/l/RxpRypfz" 
-                   class="action-button" 
-                   id="contentButton"
-                   target="_blank"
-                   rel="noopener noreferrer">
-                    <span class="button-icon">🔍</span>
-                    <span class="button-text">Explore Content</span>
-                </a>
-                
-                <!-- 状态提示 -->
-                <div class="status-message" id="contentStatus"></div>
-                
-                <!-- 第二个按钮 -->
-                <button class="action-button telegram" id="telegramButton">
-                    <span class="button-icon">📢</span>
-                    <span class="button-text">My Channel</span>
-                </button>
-                
-                <!-- 状态提示 -->
-                <div class="status-message" id="telegramStatus"></div>
-            </div>
+            <!-- 第二个按钮 -->
+            <button class="action-button telegram" id="telegramButton">
+                <span class="button-icon">📢</span>
+                <span class="button-text">My Channel</span>
+            </button>
         </div>
         
         <!-- 页脚 -->
@@ -378,157 +312,125 @@
             // 配置
             const config = {
                 telegramUrl: 'https://t.me/+lZH64VGQTDM0NjFl',
-                isRedirecting: false,
-                redirectDelay: 800 // 延迟时间（毫秒）
+                isRedirecting: false
             };
             
-            // 状态管理
-            const state = {
-                telegramClicked: false
-            };
+            // DOM元素
+            const progressBar = document.getElementById('progressBar');
+            const telegramButton = document.getElementById('telegramButton');
+            
+            // 显示进度条
+            function showProgressBar() {
+                progressBar.classList.remove('active');
+                // 触发重绘
+                void progressBar.offsetWidth;
+                progressBar.classList.add('active');
+            }
+            
+            // 隐藏进度条
+            function hideProgressBar() {
+                progressBar.classList.remove('active');
+            }
+            
+            // 安全跳转函数
+            function safeRedirect(url) {
+                return new Promise((resolve) => {
+                    // 尝试直接打开新窗口
+                    const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
+                    
+                    if (newWindow) {
+                        // 成功打开新窗口
+                        console.log('New window opened successfully');
+                        resolve(true);
+                    } else {
+                        // 弹窗被阻止，使用备用方法
+                        console.log('Popup blocked, using fallback method');
+                        
+                        // 创建隐藏链接点击
+                        const tempLink = document.createElement('a');
+                        tempLink.href = url;
+                        tempLink.target = '_blank';
+                        tempLink.rel = 'noopener noreferrer';
+                        tempLink.style.display = 'none';
+                        document.body.appendChild(tempLink);
+                        
+                        // 触发点击
+                        tempLink.click();
+                        
+                        // 清理
+                        setTimeout(() => {
+                            document.body.removeChild(tempLink);
+                        }, 100);
+                        
+                        resolve(true);
+                    }
+                });
+            }
             
             // 初始化第一个按钮
             function initContentButton() {
                 const button = document.getElementById('contentButton');
-                const status = document.getElementById('contentStatus');
                 
-                button.addEventListener('click', function(e) {
-                    // 显示点击反馈
-                    this.classList.add('loading');
-                    showStatus(status, 'Opening content...', 'success');
+                button.addEventListener('click', function() {
+                    // 显示进度条
+                    showProgressBar();
                     
-                    // 短暂延迟后恢复
+                    // 进度条完成后自动隐藏
                     setTimeout(() => {
-                        this.classList.remove('loading');
-                        clearStatus(status, 1000);
-                    }, 1000);
+                        hideProgressBar();
+                    }, 1500);
                 });
             }
             
             // 初始化Telegram按钮
             function initTelegramButton() {
-                const button = document.getElementById('telegramButton');
-                const status = document.getElementById('telegramStatus');
-                
-                button.addEventListener('click', async function(e) {
+                telegramButton.addEventListener('click', async function(e) {
                     e.preventDefault();
                     
                     // 防止重复点击
                     if (config.isRedirecting) return;
                     config.isRedirecting = true;
                     
-                    // 更新按钮状态
+                    // 显示加载状态
                     this.classList.add('loading');
-                    showStatus(status, 'Opening Telegram channel...', 'success');
+                    this.disabled = true;
+                    
+                    // 显示进度条
+                    showProgressBar();
                     
                     try {
-                        // 方法1：优先使用直接跳转（最可靠）
-                        await redirectWithFeedback(config.telegramUrl, button, status);
+                        // 短暂延迟让用户看到进度条
+                        await new Promise(resolve => setTimeout(resolve, 300));
+                        
+                        // 执行跳转
+                        await safeRedirect(config.telegramUrl);
+                        
+                        // 跳转成功，进度条继续走完
+                        setTimeout(() => {
+                            // 恢复按钮状态
+                            this.classList.remove('loading');
+                            this.disabled = false;
+                            config.isRedirecting = false;
+                            
+                            // 隐藏进度条
+                            hideProgressBar();
+                        }, 1200);
                         
                     } catch (error) {
-                        console.error('Redirect failed:', error);
-                        showStatus(status, 'Failed to open. Please try again.', 'error');
+                        console.error('Redirect error:', error);
+                        
+                        // 出错时隐藏进度条
+                        hideProgressBar();
                         
                         // 恢复按钮状态
-                        setTimeout(() => {
-                            button.classList.remove('loading');
-                            clearStatus(status, 2000);
-                            config.isRedirecting = false;
-                        }, 2000);
+                        this.classList.remove('loading');
+                        this.disabled = false;
+                        config.isRedirecting = false;
+                        
+                        // 显示错误提示（可选）
+                        alert('Unable to open Telegram. Please try again.');
                     }
                 });
-            }
-            
-            // 带反馈的跳转函数
-            async function redirectWithFeedback(url, button, status) {
-                return new Promise((resolve, reject) => {
-                    // 短延迟给用户看到反馈
-                    setTimeout(() => {
-                        try {
-                            // 记录点击时间
-                            const clickTime = Date.now();
-                            localStorage.setItem('last_click_time', clickTime);
-                            
-                            // 现代浏览器推荐的方法 - 直接在新标签打开
-                            const newWindow = window.open(url, '_blank', 'noopener,noreferrer');
-                            
-                            if (newWindow) {
-                                // 成功打开新窗口
-                                showStatus(status, 'Opened successfully!', 'success');
-                                
-                                // 更新按钮为成功状态
-                                button.classList.remove('loading');
-                                button.classList.add('success');
-                                button.innerHTML = '<span class="button-icon">✓</span><span class="button-text">Channel Opened</span>';
-                                
-                                // 几秒后恢复原状
-                                setTimeout(() => {
-                                    button.classList.remove('success');
-                                    button.innerHTML = '<span class="button-icon">📢</span><span class="button-text">My Channel</span>';
-                                    clearStatus(status, 0);
-                                    config.isRedirecting = false;
-                                }, 2000);
-                                
-                                resolve();
-                            } else {
-                                // 弹窗被阻止，使用备用方案
-                                backupRedirect(url, button, status, resolve, reject);
-                            }
-                        } catch (error) {
-                            reject(error);
-                        }
-                    }, config.redirectDelay);
-                });
-            }
-            
-            // 备用跳转方案
-            function backupRedirect(url, button, status, resolve, reject) {
-                showStatus(status, 'Opening in new tab...', 'success');
-                
-                // 创建临时链接元素
-                const tempLink = document.createElement('a');
-                tempLink.href = url;
-                tempLink.target = '_blank';
-                tempLink.rel = 'noopener noreferrer';
-                tempLink.style.display = 'none';
-                document.body.appendChild(tempLink);
-                
-                // 模拟点击
-                tempLink.click();
-                
-                // 清理
-                setTimeout(() => {
-                    document.body.removeChild(tempLink);
-                }, 100);
-                
-                // 显示成功状态
-                setTimeout(() => {
-                    showStatus(status, 'Please check your browser tabs', 'success');
-                    
-                    // 恢复按钮状态
-                    button.classList.remove('loading');
-                    clearStatus(status, 3000);
-                    config.isRedirecting = false;
-                    resolve();
-                }, 500);
-            }
-            
-            // 显示状态消息
-            function showStatus(element, message, type) {
-                element.textContent = message;
-                element.classList.remove('error');
-                if (type === 'error') {
-                    element.classList.add('error');
-                }
-                element.classList.add('show');
-            }
-            
-            // 清除状态消息
-            function clearStatus(element, delay = 0) {
-                setTimeout(() => {
-                    element.classList.remove('show');
-                    element.textContent = '';
-                }, delay);
             }
             
             // 图片加载处理
@@ -542,27 +444,27 @@
                 img.addEventListener('error', function() {
                     // 创建备用头像
                     const canvas = document.createElement('canvas');
-                    canvas.width = 300;
-                    canvas.height = 300;
+                    canvas.width = 400;
+                    canvas.height = 400;
                     const ctx = canvas.getContext('2d');
                     
                     // 绘制圆形背景
                     ctx.fillStyle = '#1a1a1a';
-                    ctx.fillRect(0, 0, 300, 300);
+                    ctx.fillRect(0, 0, 400, 400);
                     
                     // 绘制白色圆形边框
                     ctx.strokeStyle = 'white';
                     ctx.lineWidth = 4;
                     ctx.beginPath();
-                    ctx.arc(150, 150, 146, 0, Math.PI * 2);
+                    ctx.arc(200, 200, 196, 0, Math.PI * 2);
                     ctx.stroke();
                     
                     // 绘制文字
                     ctx.fillStyle = 'white';
-                    ctx.font = 'bold 60px Arial';
+                    ctx.font = 'bold 80px Arial';
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'middle';
-                    ctx.fillText('MA', 150, 150);
+                    ctx.fillText('MA', 200, 200);
                     
                     this.src = canvas.toDataURL('image/png');
                     this.style.opacity = '1';
@@ -591,19 +493,22 @@
                 initImageLoading();
                 preventInspection();
                 
-                // 添加微互动
-                setTimeout(() => {
-                    document.querySelector('.main-container').style.animation = 'fadeIn 0.6s ease-out';
-                }, 100);
-                
                 console.log('Page loaded successfully');
+            });
+            
+            // 页面离开时重置状态
+            window.addEventListener('beforeunload', function() {
+                config.isRedirecting = false;
             });
             
             // 页面可见性变化
             document.addEventListener('visibilitychange', function() {
-                if (!document.hidden) {
-                    // 页面重新显示，重置状态
+                if (document.hidden) {
+                    // 页面隐藏时重置
                     config.isRedirecting = false;
+                    telegramButton.classList.remove('loading');
+                    telegramButton.disabled = false;
+                    hideProgressBar();
                 }
             });
             
