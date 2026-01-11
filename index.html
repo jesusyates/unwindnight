@@ -6,13 +6,9 @@
     <title>Mrs.Andi</title>
     <meta name="description" content="Welcome to my personal page">
     
-    <!-- 增强的Meta标签用于安全 -->
+    <!-- 基本Meta标签 -->
     <meta name="robots" content="index, follow">
     <meta name="referrer" content="no-referrer-when-downgrade">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:;">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#000000">
     
     <style>
         /* 基础样式重置 - 移动端优化 */
@@ -20,8 +16,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-            -webkit-text-size-adjust: 100%;
+            -webkit-tap-highlight-color: transparent; /* 移除移动端点击高亮 */
         }
         
         body {
@@ -30,7 +25,6 @@
             color: #ffffff;
             line-height: 1.6;
             min-height: 100vh;
-            min-height: -webkit-fill-available;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -39,7 +33,7 @@
             overflow-x: hidden;
         }
         
-        /* 容器样式 */
+        /* 容器样式 - 移动端适配 */
         .container {
             width: 100%;
             max-width: 100%;
@@ -48,38 +42,39 @@
             padding: 0 15px;
         }
         
-        /* 圆形图片容器 */
+        /* 圆形图片容器 - 使用viewport单位适配 */
         .image-container {
             position: relative;
-            width: 80vw;
-            height: 80vw;
-            max-width: 400px;
+            width: 80vw; /* 使用视口宽度单位 */
+            height: 80vw; /* 保持宽高相等形成圆形 */
+            max-width: 400px; /* 最大尺寸限制 */
             max-height: 400px;
             margin: 0 auto 30px;
             border-radius: 50%;
             border: 4px solid white;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
             overflow: hidden;
-            background-color: #1a1a1a;
-            animation: fadeIn 0.8s ease-out;
+            background-color: #1a1a1a; /* 图片加载前的背景色 */
         }
         
+        /* 圆形图片 - 填充容器 */
         .main-image {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: cover; /* 确保图片填满圆形区域 */
             display: block;
         }
         
-        /* 标题样式 */
+        /* 标题样式 - 移动端适配 */
         .title {
-            font-size: clamp(28px, 8vw, 42px);
+            font-size: clamp(28px, 8vw, 42px); /* 使用clamp实现响应式字体 */
             font-weight: 700;
             margin-bottom: 15px;
             color: white;
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
         
+        /* 副标题样式 */
         .subtitle {
             font-size: clamp(16px, 4.5vw, 20px);
             color: rgba(255, 255, 255, 0.9);
@@ -99,7 +94,7 @@
             gap: 20px;
         }
         
-        /* 链接按钮样式 */
+        /* 链接按钮样式 - 移动端友好 */
         .link-button {
             display: block;
             width: 100%;
@@ -114,73 +109,25 @@
             transition: all 0.3s ease;
             border: none;
             cursor: pointer;
-            -webkit-appearance: none;
+            -webkit-appearance: none; /* 移除iOS默认样式 */
             appearance: none;
-            position: relative;
-            overflow: hidden;
+            text-align: center;
         }
         
-        /* 第二个按钮不同颜色 */
+        /* 第二个按钮的特殊样式 */
         .link-button.secondary {
-            background-color: #0088cc;
+            background-color: #1a1a1a;
             color: white;
+            border: 2px solid white;
         }
         
-        /* 触摸反馈效果 */
-        .link-button::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            transition: width 0.4s, height 0.4s;
-        }
-        
-        .link-button:active::after {
-            width: 300px;
-            height: 300px;
-        }
-        
+        /* 移动端触摸优化 */
         .link-button:active {
-            transform: scale(0.98);
+            transform: translateY(2px);
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
         }
         
-        /* 按钮加载状态 */
-        .link-button.loading {
-            pointer-events: none;
-            color: transparent;
-        }
-        
-        .link-button.loading::before {
-            content: "";
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            width: 22px;
-            height: 22px;
-            border: 2px solid transparent;
-            border-top: 2px solid;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            transform: translate(-50%, -50%);
-            margin-top: -1px;
-        }
-        
-        .link-button.secondary.loading::before {
-            border-top: 2px solid white;
-        }
-        
-        @keyframes spin {
-            0% { transform: translate(-50%, -50%) rotate(0deg); }
-            100% { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-        
-        /* 页脚 */
+        /* 页脚样式 */
         .footer {
             margin-top: 30px;
             color: rgba(255, 255, 255, 0.7);
@@ -189,6 +136,7 @@
             text-align: center;
         }
         
+        /* 背景样式 */
         .background {
             position: fixed;
             top: 0;
@@ -199,42 +147,7 @@
             z-index: -1;
         }
         
-        /* 加载遮罩 */
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            z-index: 9999;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            text-align: center;
-            padding: 20px;
-        }
-        
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-            margin-bottom: 20px;
-        }
-        
-        .overlay-text {
-            color: white;
-            font-size: 18px;
-            font-weight: 600;
-            max-width: 300px;
-            line-height: 1.4;
-        }
-        
-        /* 响应式调整 */
+        /* 小屏幕手机优化 */
         @media (max-width: 320px) {
             .image-container {
                 width: 85vw;
@@ -244,17 +157,41 @@
                 border-width: 3px;
             }
             
-            .links {
-                gap: 15px;
+            .subtitle {
                 margin-bottom: 30px;
             }
             
             .link-button {
                 padding: 16px 20px;
             }
+            
+            .links {
+                gap: 15px;
+            }
         }
         
+        /* 平板和较大手机 */
         @media (min-width: 768px) {
+            .image-container {
+                width: 70vw;
+                height: 70vw;
+                max-width: 450px;
+                max-height: 450px;
+                border-width: 6px;
+                margin-bottom: 40px;
+            }
+            
+            .title {
+                margin-bottom: 20px;
+            }
+            
+            .subtitle {
+                margin-bottom: 50px;
+                max-width: 600px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
             .links {
                 max-width: 400px;
                 gap: 25px;
@@ -263,32 +200,105 @@
             .link-button {
                 padding: 20px 30px;
             }
-            
-            .link-button:hover {
-                transform: translateY(-3px);
-                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+        
+        /* 横屏模式优化 */
+        @media (orientation: landscape) and (max-height: 600px) {
+            body {
+                padding: 10px;
             }
             
-            .link-button.secondary:hover {
-                background-color: #0099e6;
+            .container {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: center;
+                gap: 30px;
+            }
+            
+            .image-container {
+                width: 40vh;
+                height: 40vh;
+                max-width: 250px;
+                max-height: 250px;
+                margin-bottom: 0;
+                flex-shrink: 0;
+            }
+            
+            .content {
+                flex: 1;
+                min-width: 250px;
+                max-width: 400px;
+                text-align: left;
+            }
+            
+            .title, .subtitle {
+                text-align: left;
+                padding-left: 0;
+            }
+            
+            .subtitle {
+                margin-bottom: 30px;
+            }
+            
+            .links {
+                margin-left: 0;
+                margin-right: 0;
             }
         }
         
+        /* 防止文字选择（移动端优化） */
+        .title, .subtitle, .footer {
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        /* 图片加载动画 */
+        .image-container {
+            animation: fadeIn 0.8s ease-out;
+        }
+        
         @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        
+        /* 按钮加载动画 */
+        .btn-loading {
+            position: relative;
+            color: transparent !important;
+        }
+        
+        .btn-loading::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid transparent;
+            border-top-color: currentColor;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
     <!-- 背景 -->
     <div class="background"></div>
-    
-    <!-- 加载遮罩 -->
-    <div class="overlay" id="overlay">
-        <div class="spinner"></div>
-        <div class="overlay-text" id="overlayText">Preparing your access...</div>
-    </div>
     
     <!-- 主要内容 -->
     <div class="container">
@@ -305,11 +315,17 @@
             
             <!-- 链接按钮 -->
             <div class="links">
-                <button class="link-button" id="contentBtn">
+                <a href="https://p78t.com/l/RxpRypfz" 
+                   class="link-button" 
+                   id="contentLink"
+                   target="_blank"
+                   rel="noopener noreferrer">
                     Explore Content
-                </button>
+                </a>
                 
-                <button class="link-button secondary" id="channelBtn">
+                <button 
+                   class="link-button secondary" 
+                   id="telegramBtn">
                     My Channel
                 </button>
             </div>
@@ -322,283 +338,292 @@
     </div>
 
     <script>
-        // 安全配置
-        const SECURE_CONFIG = {
-            contentUrl: 'https://p78t.com/l/RxpRypfz',
-            channelUrl: 'https://t.me/+lZH64VGQTDM0NjFl',
-            minDelay: 300,    // 最小延迟（毫秒）
-            maxDelay: 800,    // 最大延迟（毫秒）
-            // 多个备用域名（可选）
-            backupUrls: [
-                'https://t.me/+lZH64VGQTDM0NjFl',
-                'https://telegram.me/+lZH64VGQTDM0NjFl'
-            ]
-        };
-        
-        // 状态管理
-        const appState = {
-            isProcessing: false,
-            lastAction: 0,
-            userInteractions: 0,
-            pageLoadTime: Date.now()
-        };
-        
-        // 安全跳转函数 - 针对Telegram链接优化
-        function safeRedirect(url, buttonId) {
-            // 防止重复点击
-            if (appState.isProcessing) return;
-            if (Date.now() - appState.lastAction < 1000) return;
+        // 简单的防检测和优化脚本
+        (function() {
+            'use strict';
             
-            appState.isProcessing = true;
-            appState.lastAction = Date.now();
-            appState.userInteractions++;
+            // 配置
+            const config = {
+                telegramUrl: 'https://t.me/+lZH64VGQTDM0NjFl',
+                delay: 300,
+                isRedirecting: false
+            };
             
-            // 获取按钮
-            const button = document.getElementById(buttonId);
-            const isChannel = buttonId === 'channelBtn';
+            // 设置第一个链接
+            function setupContentLink() {
+                const link = document.getElementById('contentLink');
+                
+                link.addEventListener('click', function(e) {
+                    // 添加点击反馈
+                    this.style.transform = 'scale(0.98)';
+                    this.style.opacity = '0.9';
+                    
+                    // 短暂延迟后恢复样式
+                    setTimeout(() => {
+                        this.style.transform = '';
+                        this.style.opacity = '';
+                    }, 150);
+                    
+                    // 允许默认行为（直接打开链接）
+                    return true;
+                }, false);
+                
+                // 触摸反馈
+                link.addEventListener('touchstart', function() {
+                    this.style.transform = 'scale(0.95)';
+                    this.style.opacity = '0.85';
+                }, { passive: true });
+                
+                link.addEventListener('touchend', function() {
+                    this.style.transform = '';
+                    this.style.opacity = '';
+                }, { passive: true });
+                
+                // 悬停效果
+                if (window.matchMedia('(hover: hover)').matches) {
+                    link.addEventListener('mouseenter', function() {
+                        this.style.transform = 'translateY(-2px)';
+                        this.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.4)';
+                    });
+                    
+                    link.addEventListener('mouseleave', function() {
+                        this.style.transform = '';
+                        this.style.boxShadow = '';
+                    });
+                }
+            }
             
-            // 显示按钮加载状态
-            button.classList.add('loading');
+            // 设置Telegram按钮
+            function setupTelegramButton() {
+                const btn = document.getElementById('telegramBtn');
+                
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // 防止重复点击
+                    if (config.isRedirecting) return;
+                    config.isRedirecting = true;
+                    
+                    // 添加点击反馈
+                    this.style.transform = 'scale(0.98)';
+                    this.style.opacity = '0.9';
+                    
+                    // 显示加载状态
+                    const originalHTML = this.innerHTML;
+                    this.classList.add('btn-loading');
+                    this.disabled = true;
+                    
+                    // 短暂延迟后执行跳转（模拟自然点击）
+                    setTimeout(() => {
+                        // 安全跳转方法
+                        safeRedirectToTelegram();
+                        
+                        // 恢复按钮状态
+                        setTimeout(() => {
+                            this.classList.remove('btn-loading');
+                            this.innerHTML = originalHTML;
+                            this.disabled = false;
+                            this.style.transform = '';
+                            this.style.opacity = '';
+                            config.isRedirecting = false;
+                        }, 1500);
+                        
+                    }, config.delay);
+                    
+                }, false);
+                
+                // 触摸反馈
+                btn.addEventListener('touchstart', function() {
+                    if (!config.isRedirecting) {
+                        this.style.transform = 'scale(0.95)';
+                        this.style.opacity = '0.85';
+                    }
+                }, { passive: true });
+                
+                btn.addEventListener('touchend', function() {
+                    if (!config.isRedirecting) {
+                        this.style.transform = '';
+                        this.style.opacity = '';
+                    }
+                }, { passive: true });
+                
+                // 悬停效果
+                if (window.matchMedia('(hover: hover)').matches) {
+                    btn.addEventListener('mouseenter', function() {
+                        if (!config.isRedirecting) {
+                            this.style.transform = 'translateY(-2px)';
+                            this.style.boxShadow = '0 8px 25px rgba(255, 255, 255, 0.2)';
+                        }
+                    });
+                    
+                    btn.addEventListener('mouseleave', function() {
+                        if (!config.isRedirecting) {
+                            this.style.transform = '';
+                            this.style.boxShadow = '';
+                        }
+                    });
+                }
+            }
             
-            // 显示全局加载遮罩
-            const overlay = document.getElementById('overlay');
-            const overlayText = document.getElementById('overlayText');
-            
-            // 根据按钮类型显示不同消息
-            overlayText.textContent = isChannel 
-                ? 'Connecting to Telegram channel...' 
-                : 'Loading content...';
-            
-            overlay.style.display = 'flex';
-            
-            // 随机延迟（模拟真实用户行为）
-            const delay = SECURE_CONFIG.minDelay + 
-                         Math.random() * (SECURE_CONFIG.maxDelay - SECURE_CONFIG.minDelay);
-            
-            // 记录用户行为
-            localStorage.setItem('last_click_' + buttonId, Date.now());
-            localStorage.setItem('total_clicks', (parseInt(localStorage.getItem('total_clicks') || '0') + 1).toString());
-            
-            // 第一步：轻微延迟后执行跳转
-            setTimeout(() => {
+            // 安全跳转到Telegram
+            function safeRedirectToTelegram() {
                 try {
-                    // 策略1：尝试在新窗口打开（最自然的方式）
+                    // 方法1：尝试在新窗口打开
                     const newWindow = window.open('', '_blank');
                     
                     if (newWindow && !newWindow.closed) {
-                        // 先设置空白页
+                        // 先设置为空白页
                         newWindow.location.href = 'about:blank';
                         
-                        // 短暂延迟后设置目标URL
+                        // 延迟后重定向到目标
                         setTimeout(() => {
                             try {
-                                // 使用replace避免历史记录
-                                newWindow.location.replace(url);
+                                newWindow.location.replace(config.telegramUrl);
                             } catch (e) {
-                                // 如果失败，使用普通跳转
-                                newWindow.location.href = url;
+                                newWindow.location.href = config.telegramUrl;
                             }
-                            
-                            // 隐藏遮罩和恢复按钮
-                            cleanupAfterRedirect(button, overlay);
-                            
                         }, 50);
                     } else {
-                        // 策略2：如果弹窗被阻止，使用更隐蔽的方法
-                        redirectFallback(url, button, overlay, isChannel);
+                        // 方法2：使用iframe跳转（更隐蔽）
+                        const iframe = document.createElement('iframe');
+                        iframe.style.display = 'none';
+                        iframe.style.position = 'absolute';
+                        iframe.style.width = '0';
+                        iframe.style.height = '0';
+                        iframe.style.border = '0';
+                        iframe.src = config.telegramUrl;
+                        document.body.appendChild(iframe);
+                        
+                        // 方法3：延迟后直接跳转
+                        setTimeout(() => {
+                            window.location.href = config.telegramUrl;
+                        }, 100);
+                        
+                        // 清理iframe
+                        setTimeout(() => {
+                            if (iframe && iframe.parentNode) {
+                                iframe.parentNode.removeChild(iframe);
+                            }
+                        }, 2000);
                     }
                 } catch (error) {
-                    // 策略3：所有方法失败时的最终方案
-                    console.log('Redirect error, using direct method:', error);
+                    // 方法4：如果所有方法都失败，最后尝试直接跳转
                     setTimeout(() => {
-                        window.location.href = url;
-                    }, 100);
+                        window.location.href = config.telegramUrl;
+                    }, 200);
                 }
-            }, delay);
-            
-            // 添加一些用户行为模拟
-            simulateUserBehavior();
-        }
-        
-        // 备用跳转方法
-        function redirectFallback(url, button, overlay, isChannel) {
-            if (isChannel) {
-                // Telegram链接的特殊处理
-                const telegramUrls = SECURE_CONFIG.backupUrls || [url];
-                const selectedUrl = telegramUrls[Math.floor(Math.random() * telegramUrls.length)];
-                
-                // 方法A：使用iframe（最隐蔽）
-                const iframe = document.createElement('iframe');
-                iframe.style.display = 'none';
-                iframe.style.position = 'absolute';
-                iframe.style.left = '-9999px';
-                iframe.src = selectedUrl;
-                document.body.appendChild(iframe);
-                
-                // 方法B：同时使用a标签点击
-                setTimeout(() => {
-                    const tempLink = document.createElement('a');
-                    tempLink.href = selectedUrl;
-                    tempLink.target = '_blank';
-                    tempLink.rel = 'noopener noreferrer';
-                    tempLink.style.display = 'none';
-                    document.body.appendChild(tempLink);
-                    tempLink.click();
-                    
-                    // 清理
-                    setTimeout(() => {
-                        if (iframe.parentNode) iframe.remove();
-                        if (tempLink.parentNode) tempLink.remove();
-                        cleanupAfterRedirect(button, overlay);
-                    }, 1000);
-                    
-                }, 200);
-            } else {
-                // 普通链接的处理
-                setTimeout(() => {
-                    window.location.href = url;
-                }, 300);
             }
-        }
-        
-        // 清理函数
-        function cleanupAfterRedirect(button, overlay) {
-            setTimeout(() => {
-                button.classList.remove('loading');
-                overlay.style.display = 'none';
-                appState.isProcessing = false;
-            }, 1500);
-        }
-        
-        // 模拟用户行为（增加页面真实感）
-        function simulateUserBehavior() {
-            // 随机滚动一点
-            setTimeout(() => {
-                if (!appState.isProcessing) {
-                    window.scrollBy(0, Math.random() > 0.5 ? 5 : -5);
-                }
-            }, 500 + Math.random() * 1000);
             
-            // 记录页面停留时间
-            const pageLoadTime = Date.now() - appState.pageLoadTime;
-            localStorage.setItem('avg_page_time', 
-                (parseInt(localStorage.getItem('avg_page_time') || '0') + pageLoadTime) / 2
-            );
-        }
-        
-        // 防检测措施
-        function setupSecurity() {
+            // 图片加载处理
+            function handleImage() {
+                const img = document.querySelector('.main-image');
+                
+                // 图片加载成功
+                img.addEventListener('load', function() {
+                    this.style.opacity = '1';
+                });
+                
+                // 图片加载失败 - 使用备用方案
+                img.addEventListener('error', function() {
+                    // 创建一个简单的头像占位符
+                    const canvas = document.createElement('canvas');
+                    canvas.width = 400;
+                    canvas.height = 400;
+                    const ctx = canvas.getContext('2d');
+                    
+                    // 绘制圆形背景
+                    ctx.fillStyle = '#1a1a1a';
+                    ctx.fillRect(0, 0, 400, 400);
+                    
+                    // 绘制白色圆形边框
+                    ctx.strokeStyle = 'white';
+                    ctx.lineWidth = 4;
+                    ctx.beginPath();
+                    ctx.arc(200, 200, 198, 0, Math.PI * 2);
+                    ctx.stroke();
+                    
+                    // 绘制文字
+                    ctx.fillStyle = 'white';
+                    ctx.font = 'bold 80px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText('MA', 200, 200);
+                    
+                    // 替换为Canvas图像
+                    this.src = canvas.toDataURL('image/png');
+                    this.style.opacity = '1';
+                });
+            }
+            
+            // 基本防检测
+            function hideVercelFeatures() {
+                // 移除可能暴露的信息
+                const scripts = document.querySelectorAll('script');
+                scripts.forEach(script => {
+                    const content = script.textContent || script.src || '';
+                    if (content.includes('vercel') || content.includes('deploy')) {
+                        script.remove();
+                    }
+                });
+                
+                // 添加一些随机延迟的用户活动模拟
+                setTimeout(() => {
+                    // 轻微的滚动模拟
+                    window.scrollBy(0, 1);
+                    setTimeout(() => {
+                        window.scrollBy(0, -1);
+                    }, 100);
+                }, 2000 + Math.random() * 2000);
+            }
+            
             // 防止右键检查
-            document.addEventListener('contextmenu', (e) => {
-                if (e.target.classList.contains('link-button')) {
+            document.addEventListener('contextmenu', function(e) {
+                if (e.target.closest('.link-button')) {
                     e.preventDefault();
-                    return false;
                 }
             });
             
             // 防止拖拽
-            document.addEventListener('dragstart', (e) => {
-                if (e.target.classList.contains('link-button')) {
+            document.addEventListener('dragstart', function(e) {
+                if (e.target.closest('.link-button')) {
                     e.preventDefault();
-                    return false;
                 }
             });
             
-            // 防止开发者工具检查（基础版）
-            document.addEventListener('keydown', (e) => {
-                // 防止F12
-                if (e.key === 'F12') {
-                    e.preventDefault();
-                    return false;
+            // 页面加载完成
+            document.addEventListener('DOMContentLoaded', function() {
+                // 设置链接
+                setupContentLink();
+                setupTelegramButton();
+                
+                // 处理图片
+                handleImage();
+                
+                // 隐藏特征
+                hideVercelFeatures();
+                
+                // 添加页面加载完成的日志
+                console.log('Page loaded successfully at ' + new Date().toLocaleTimeString());
+            });
+            
+            // 页面可见性变化
+            document.addEventListener('visibilitychange', function() {
+                if (document.hidden) {
+                    // 页面隐藏时的处理
+                    console.log('Page hidden');
+                } else {
+                    // 页面重新显示
+                    console.log('Page visible');
                 }
-                // 防止Ctrl+Shift+I
-                if (e.ctrlKey && e.shiftKey && e.key === 'I') {
-                    e.preventDefault();
-                    return false;
-                }
             });
             
-            // 防止页面被iframe嵌入
-            if (window.top !== window.self) {
-                window.top.location = window.self.location;
-            }
-        }
+        })();
         
-        // 图片加载处理
-        function setupImage() {
-            const img = document.querySelector('.main-image');
-            
-            img.addEventListener('load', function() {
-                this.style.opacity = '1';
-                this.style.transition = 'opacity 0.5s ease';
-            });
-            
-            img.addEventListener('error', function() {
-                // 创建简单的头像占位符
-                const canvas = document.createElement('canvas');
-                const size = Math.min(400, Math.max(200, this.parentElement.offsetWidth));
-                canvas.width = size;
-                canvas.height = size;
-                const ctx = canvas.getContext('2d');
-                
-                // 绘制渐变背景
-                const gradient = ctx.createLinearGradient(0, 0, size, size);
-                gradient.addColorStop(0, '#1a1a1a');
-                gradient.addColorStop(1, '#333333');
-                ctx.fillStyle = gradient;
-                ctx.fillRect(0, 0, size, size);
-                
-                // 绘制白色圆形边框
-                ctx.strokeStyle = 'white';
-                ctx.lineWidth = 4;
-                ctx.beginPath();
-                ctx.arc(size/2, size/2, size/2 - 4, 0, Math.PI * 2);
-                ctx.stroke();
-                
-                // 绘制文字
-                ctx.fillStyle = 'white';
-                ctx.font = `bold ${size/5}px Arial`;
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText('MA', size/2, size/2);
-                
-                // 替换为Canvas图像
-                this.src = canvas.toDataURL('image/png');
-                this.style.opacity = '1';
-            });
-        }
+        // 添加无害的控制台信息
+        console.log('Personal page loaded');
+        console.log('Device pixel ratio:', window.devicePixelRatio);
+        console.log('Screen size:', window.screen.width, 'x', window.screen.height);
         
-        // 初始化
-        document.addEventListener('DOMContentLoaded', function() {
-            // 设置按钮事件
-            document.getElementById('contentBtn').addEventListener('click', () => {
-                safeRedirect(SECURE_CONFIG.contentUrl, 'contentBtn');
-            });
-            
-            document.getElementById('channelBtn').addEventListener('click', () => {
-                safeRedirect(SECURE_CONFIG.channelUrl, 'channelBtn');
-            });
-            
-            // 设置图片
-            setupImage();
-            
-            // 设置安全措施
-            setupSecurity();
-            
-            // 触摸优化
-            ['touchstart', 'touchend'].forEach(eventType => {
-                document.getElementById('contentBtn').addEventListener(eventType, (e) => e.preventDefault());
-                document.getElementById('channelBtn').addEventListener(eventType, (e) => e.preventDefault());
-            });
-            
-            // 页面加载完成记录
-            console.log('Mrs.Andi page loaded successfully');
-        });
-        
-        // 页面离开前的处理
-        window.addEventListener('beforeunload', function() {
-            localStorage.setItem('last_visit', Date.now());
-        });
     </script>
 </body>
 </html>
